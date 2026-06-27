@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terezinha Abel — Escritora e Educadora</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── ROOT ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --cream:   #E8E2D8;
+  --paper:   #F4F0EA;
+  --cloud:   #F8F6F2;
+  --wave1:   #6E78A3;
+  --wave2:   #4A5280;
+  --wave3:   #2E3460;
+  --sun:     #B59C53;
+  --sun-l:   #E8D98A;
+  --red:     #B03238;
+  --yellow:  #CFC23F;
+  --brown:   #7A5C3A;
+  --ink:     #1A1E3A;
+  --muted:   #6B7280;
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --body: 'Inter', system-ui, sans-serif;
+}
+
+body{font-family:var(--body);background:var(--paper);color:var(--ink);overflow-x:hidden;}
+
+/* SCROLL PROGRESS */
+#progress-bar{position:fixed;top:0;left:0;z-index:9999;height:3px;width:0%;background:linear-gradient(90deg,var(--wave1),var(--sun),var(--red));transition:width 0.1s linear;}
+
+/* NAV */
+nav{position:fixed;top:3px;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;background:rgba(244,240,234,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(110,120,163,0.15);transition:all 0.3s;}
+nav.scrolled{background:rgba(244,240,234,0.97);box-shadow:0 2px 24px rgba(30,40,80,0.08);}
+.nav-logo{font-family:var(--display);font-size:1.3rem;font-weight:600;color:var(--wave2);text-decoration:none;letter-spacing:0.02em;display:flex;align-items:center;gap:0.6rem;cursor:pointer;}
+.nav-logo span{color:var(--red);}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{font-size:0.8rem;font-weight:500;letter-spacing:0.06em;color:var(--muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s;cursor:pointer;}
+.nav-links a:hover{color:var(--wave1);}
+
+/* HERO */
+.hero{min-height:100vh;background:linear-gradient(180deg,var(--cloud) 0%,var(--cream) 60%,var(--wave1) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding-top:60px;}
+.hero-sun{position:absolute;top:8%;right:12%;width:clamp(80px,10vw,140px);height:clamp(80px,10vw,140px);background:radial-gradient(circle,var(--sun-l) 30%,var(--sun) 70%,transparent 100%);border-radius:50%;animation:sunPulse 4s ease-in-out infinite;box-shadow:0 0 60px rgba(181,156,83,0.4);}
+@keyframes sunPulse{0%,100%{transform:scale(1);box-shadow:0 0 60px rgba(181,156,83,0.4);}50%{transform:scale(1.06);box-shadow:0 0 90px rgba(181,156,83,0.6);}}
+.cloud{position:absolute;background:white;border-radius:50px;opacity:0.9;}
+.cloud::before,.cloud::after{content:'';position:absolute;background:white;border-radius:50%;}
+.cloud-1{width:180px;height:55px;top:18%;left:5%;animation:cloudDrift 20s linear infinite;}
+.cloud-1::before{width:80px;height:80px;top:-35px;left:20px;}
+.cloud-1::after{width:60px;height:60px;top:-25px;left:75px;}
+.cloud-2{width:140px;height:45px;top:12%;left:55%;animation:cloudDrift 28s linear infinite reverse;}
+.cloud-2::before{width:65px;height:65px;top:-28px;left:15px;}
+.cloud-2::after{width:50px;height:50px;top:-20px;left:60px;}
+.cloud-3{width:100px;height:35px;top:25%;left:30%;animation:cloudDrift 35s linear infinite;opacity:0.6;}
+.cloud-3::before{width:45px;height:45px;top:-20px;left:12px;}
+.cloud-3::after{width:38px;height:38px;top:-16px;left:44px;}
+@keyframes cloudDrift{0%{transform:translateX(0);}50%{transform:translateX(30px);}100%{transform:translateX(0);}}
+.hero-boat{position:relative;z-index:10;animation:boatRock 3.5s ease-in-out infinite;transform-origin:center bottom;margin-top:2.5rem;}
+@keyframes boatRock{0%,100%{transform:rotate(-2deg) translateY(0);}25%{transform:rotate(1.5deg) translateY(-8px);}50%{transform:rotate(-1deg) translateY(-14px);}75%{transform:rotate(2deg) translateY(-8px);}}
+.hero-content{position:relative;z-index:10;text-align:center;padding:2rem 1.5rem 0;max-width:900px;margin:0 auto;}
+.hero-author{font-size:0.75rem;font-weight:500;letter-spacing:0.2em;color:var(--wave2);text-transform:uppercase;margin-bottom:1rem;opacity:0;animation:fadeUp 0.6s 0.2s forwards;}
+.hero-title{font-family:var(--display);font-size:clamp(2.5rem,8vw,6rem);font-weight:600;line-height:1.0;color:var(--wave2);margin-bottom:0.75rem;opacity:0;animation:fadeUp 0.7s 0.4s forwards;}
+.hero-title em{font-style:italic;color:var(--red);}
+.hero-subtitle{font-family:var(--display);font-size:clamp(1rem,2vw,1.4rem);font-style:italic;color:var(--brown);margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s 0.6s forwards;}
+.hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s 0.8s forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:0.5rem;font-size:0.7rem;letter-spacing:0.1em;color:var(--cloud);text-transform:uppercase;animation:bounce 2s 1.5s ease-in-out infinite,fadeIn 0.5s 1.5s forwards;}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
+@keyframes fadeIn{to{opacity:1;}}
+.scroll-arrow{width:24px;height:24px;border-right:2px solid var(--cloud);border-bottom:2px solid var(--cloud);transform:rotate(45deg);}
+
+/* BUTTONS */
+.btn{font-family:var(--body);font-size:0.875rem;font-weight:600;letter-spacing:0.05em;padding:0.8rem 2rem;border-radius:100px;text-decoration:none;transition:all 0.25s;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:0.5rem;}
+.btn-primary{background:var(--wave2);color:var(--cloud);}
+.btn-primary:hover{background:var(--wave3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,82,128,0.35);}
+.btn-outline{background:transparent;color:var(--wave2);border:2px solid var(--wave1);}
+.btn-outline:hover{background:var(--wave1);color:white;transform:translateY(-2px);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.delay-1{transition-delay:0.1s;}.delay-2{transition-delay:0.2s;}.delay-3{transition-delay:0.3s;}.delay-4{transition-delay:0.4s;}.delay-5{transition-delay:0.5s;}
+
+/* SECTIONS */
+section{padding:6rem 2rem;}
+.container{max-width:1100px;margin:0 auto;}
+.section-label{font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.75rem;}
+.section-title{font-family:var(--display);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:1rem;}
+.section-title em{font-style:italic;color:var(--wave1);}
+
+/* PREVIEW CARDS */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem;}
+.preview-card{background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;gap:1.25rem;transition:all 0.25s;position:relative;overflow:hidden;color:inherit;text-decoration:none;cursor:pointer;}
+.preview-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(110,120,163,0.08),transparent);opacity:0;transition:opacity 0.25s;}
+.preview-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(74,82,128,0.12);border-color:var(--wave1);}
+.preview-card:hover::before{opacity:1;}
+.preview-icon{width:50px;height:50px;background:rgba(110,120,163,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--wave1);transition:all 0.25s;}
+.preview-card:hover .preview-icon{background:rgba(110,120,163,0.2);transform:scale(1.1);}
+.preview-icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.5;fill:none;}
+.preview-card h3{font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);}
+.preview-card p{font-size:0.9rem;color:var(--muted);line-height:1.6;margin:0;}
+.preview-arrow{color:var(--wave1);font-weight:600;font-size:1.1rem;align-self:flex-start;transition:transform 0.2s;}
+.preview-card:hover .preview-arrow{transform:translateX(4px);}
+
+/* QUOTE BAND */
+.quote-band{background:var(--cream);border-top:1px solid rgba(110,120,163,0.15);border-bottom:1px solid rgba(110,120,163,0.15);padding:4rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.quote-band::before{content:'\201C';font-family:var(--display);font-size:20rem;font-weight:300;color:var(--wave1);opacity:0.06;position:absolute;top:-4rem;left:2rem;line-height:1;pointer-events:none;}
+.big-quote{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.2rem);font-style:italic;font-weight:300;color:var(--ink);max-width:800px;margin:0 auto 1rem;line-height:1.45;}
+.big-quote em{color:var(--red);font-style:inherit;}
+.quote-attr{font-size:0.85rem;color:var(--muted);letter-spacing:0.04em;}
+
+/* LIVRO SECTION */
+.livro-section{background:var(--wave2);color:white;position:relative;overflow:hidden;padding:6rem 2rem;}
+.livro-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(181,156,83,0.15) 0%,transparent 60%);}
+.livro-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;position:relative;z-index:1;}
+.livro-img-wrap{position:relative;display:flex;justify-content:center;}
+.livro-img{width:100%;max-width:380px;border-radius:8px;box-shadow:0 40px 80px rgba(0,0,0,0.5);transition:transform 0.4s ease;}
+.livro-img:hover{transform:rotate(-1deg) scale(1.03);}
+.livro-badge{position:absolute;top:-15px;right:0px;background:var(--sun);color:var(--ink);font-size:0.7rem;font-weight:700;letter-spacing:0.08em;padding:0.5rem 1rem;border-radius:100px;text-transform:uppercase;box-shadow:0 4px 16px rgba(181,156,83,0.4);animation:badgePop 2s ease-in-out infinite;}
+@keyframes badgePop{0%,100%{transform:scale(1) rotate(-3deg);}50%{transform:scale(1.05) rotate(-3deg);}}
+.livro-text .section-label{color:var(--sun);}
+.livro-text .section-title{color:white;}
+.livro-text .section-title em{color:var(--sun);}
+.livro-lead{color:rgba(255,255,255,0.75);font-size:1.05rem;line-height:1.8;margin-bottom:2rem;}
+.livro-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
+.meta-item{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1rem;}
+.meta-label{font-size:0.7rem;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3rem;}
+.meta-value{font-family:var(--display);font-size:1rem;font-weight:600;color:white;}
+
+/* WAVE DIVIDER */
+.wave-divider{line-height:0;overflow:hidden;}
+.wave-divider svg{display:block;width:100%;}
+
+/* FOOTER */
+footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;text-align:center;border-top:1px solid rgba(110,120,163,0.2);}
+.footer-logo{font-family:var(--display);font-size:1.75rem;font-weight:600;color:white;margin-bottom:0.4rem;}
+.footer-sub{font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:1.75rem;}
+.footer-camoes{font-family:var(--display);font-size:0.95rem;font-style:italic;color:rgba(181,156,83,0.7);max-width:480px;margin:0 auto 1.75rem;line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);padding-top:1.75rem;}
+.footer-camoes span{font-style:normal;font-size:0.78rem;opacity:0.6;}
+.footer-copy{font-size:0.72rem;opacity:0.4;}
+
+/* PAGE INDICATOR */
+.page-indicator{position:fixed;bottom:2rem;right:2rem;z-index:800;background:var(--wave2);color:white;padding:1rem 1.5rem;border-radius:100px;font-size:0.85rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;box-shadow:0 8px 24px rgba(74,82,128,0.3);transition:all 0.3s;}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  nav .nav-links{display:none;}
+  section{padding:4rem 1.25rem;}
+  .preview-grid{grid-template-columns:1fr;}
+  .livro-grid{grid-template-columns:1fr;gap:2.5rem;}
+}
+
+.section-lead{font-size:1.05rem;color:var(--muted);max-width:540px;line-height:1.8;margin-bottom:3rem;}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- PAGE INDICATOR -->
+<div class="page-indicator" id="page-indicator">Home</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════
+     HOME PAGE
+════════════════════════════════════════ -->
+<div id="home-page" class="page-content">
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="cloud cloud-1"></div>
+  <div class="cloud cloud-2"></div>
+  <div class="cloud cloud-3"></div>
+  <div class="hero-sun"></div>
+
+  <div class="hero-content">
+    <p class="hero-author">Terezinha Abel Alves · Escritora & Educadora</p>
+    <h1 class="hero-title">A Busca do<br><em>Menino Azul</em></h1>
+    <p class="hero-subtitle">Uma viagem pelos mares da imaginação e do coração</p>
+    <div class="hero-ctas">
+      <a onclick="showPage('obras')" class="btn btn-primary" style="cursor:pointer;">Conhecer o livro</a>
+      <a onclick="showPage('sobre')" class="btn btn-outline" style="cursor:pointer;">Sobre a autora</a>
+    </div>
+  </div>
+
+  <div class="hero-boat">
+    <svg class="hero-boat-svg" width="340" height="220" viewBox="0 0 340 220" fill="none">
+      <ellipse cx="170" cy="175" rx="110" ry="28" fill="#7A5C3A" opacity="0.8"/>
+      <path d="M62 158 Q90 172 170 178 Q250 172 278 158 L270 185 Q220 200 170 200 Q120 200 70 185 Z" fill="#7A5C3A"/>
+      <line x1="170" y1="60" x2="170" y2="162" stroke="#5A3F22" stroke-width="3"/>
+      <path d="M170 65 L220 100 L170 155 Z" fill="#B59C53" opacity="0.9"/>
+      <rect x="147" y="127" width="17" height="26" rx="4" fill="#CFC23F"/>
+      <circle cx="156" cy="122" r="12" fill="#6E78A3"/>
+      <path d="M149 113 L151 107 L156 110 L161 107 L163 113 Z" fill="#B59C53"/>
+      <path d="M163 122 Q178 118 185 125 Q180 132 172 128 Z" fill="#B03238"/>
+      <line x1="164" y1="133" x2="185" y2="125" stroke="#CFC23F" stroke-width="5" stroke-linecap="round"/>
+      <path d="M40 178 Q60 168 80 178 Q100 188 120 178 Q140 168 160 178 Q180 188 200 178 Q220 168 240 178 Q260 188 280 178 Q300 168 310 174" stroke="#6E78A3" stroke-width="2.5" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- WAVE TRANSITION -->
+<div class="wave-divider" style="background:var(--wave3);margin-top:-1px;">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,0 L0,0 Z" fill="var(--wave2)"/>
+  </svg>
+</div>
+
+<!-- FEATURED BOOK -->
+<section class="livro-section">
+  <div class="container">
+    <div class="livro-grid">
+      <div class="livro-img-wrap reveal-left">
+        <span class="livro-badge">Lançamento 2024</span>
+        <div class="livro-img" style="width:300px;height:420px;background:linear-gradient(135deg,#6E78A3,#4A5280);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-family:var(--display);font-size:1.5rem;font-weight:300;">
+          
+        </div>
+      </div>
+      <div class="livro-text reveal-left">
+        <p class="section-label">Obra destaque</p>
+        <h2 class="section-title">A Busca do<br><em>Menino Azul</em></h2>
+        <p class="livro-lead">Uma obra infantojuvenil que reafirma o compromisso de Terezinha Abel com a formação sensível das crianças. Com ilustrações encantadoras de Ester Rodrigues Diniz Carvalho, o livro navega pelos mares da diferença, do pertencimento e da coragem de ser quem se é.</p>
+        <div class="livro-meta">
+          <div class="meta-item">
+            <p class="meta-label">Autora</p>
+            <p class="meta-value">Terezinha Abel Alves</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Ilustrações</p>
+            <p class="meta-value">Ester Rodrigues Diniz Carvalho</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Ano</p>
+            <p class="meta-value">2024</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Editora</p>
+            <p class="meta-value">Asinha Editora</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE DOWN -->
+<div class="wave-divider" style="background:var(--paper);margin-top:-1px;">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+    <path d="M0,30 C360,0 720,60 1080,30 C1260,15 1380,45 1440,30 L1440,60 L0,60 Z" fill="var(--wave2)"/>
+  </svg>
+</div>
+
+<!-- PREVIEW SECTIONS -->
+<section style="background:var(--paper);padding:6rem 2rem;">
+  <div class="container">
+    <p class="section-label reveal">Explore</p>
+    <h2 class="section-title reveal">Descobra o universo<br>de Terezinha Abel</h2>
+    <div class="preview-grid">
+
+      <a onclick="showPage('sobre')" class="preview-card reveal" style="cursor:pointer;">
+        <div class="preview-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 22C8 18 12 16 20 16C28 16 32 18 32 22V32H8V22Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Quem é Terezinha</h3>
+        <p>Conheça sua história, formação e trajetória como educadora e escritora.</p>
+        <span class="preview-arrow">→</span>
+      </a>
+
+      <a onclick="showPage('obras')" class="preview-card reveal delay-2" style="cursor:pointer;">
+        <div class="preview-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M8 6H32C33.1 6 34 6.9 34 8V32C34 33.1 33.1 34 32 34H8C6.9 34 6 33.1 6 32V8C6 6.9 6.9 6 8 6Z" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="14" y1="12" x2="26" y2="12" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="14" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="14" y1="24" x2="22" y2="24" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Todas as Obras</h3>
+        <p>Livros, antologias, contos e participações em coletâneas.</p>
+        <span class="preview-arrow">→</span>
+      </a>
+
+      <a onclick="showPage('trajetoria')" class="preview-card reveal delay-3" style="cursor:pointer;">
+        <div class="preview-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="32" cy="32" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="11" y1="11" x2="17" y2="17" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="23" y1="23" x2="29" y2="29" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Trajetória</h3>
+        <p>Cronologia de prêmios, publicações e momentos marcantes.</p>
+        <span class="preview-arrow">→</span>
+      </a>
+
+      <a onclick="showPage('blog')" class="preview-card reveal delay-4" style="cursor:pointer;">
+        <div class="preview-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M6 8H34C35.1 8 36 8.9 36 10V30C36 31.1 35.1 32 34 32H6C4.9 32 4 31.1 4 30V10C4 8.9 4.9 8 6 8Z" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="10" y1="14" x2="30" y2="14" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="10" y1="20" x2="30" y2="20" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="10" y1="26" x2="20" y2="26" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <h3>Blog & Notícias</h3>
+        <p>Reflexões, atualizações e contos do universo literário.</p>
+        <span class="preview-arrow">→</span>
+      </a>
+
+      <a onclick="showPage('contato')" class="preview-card reveal delay-5" style="cursor:pointer;">
+        <div class="preview-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M6 8H34C35.1 8 36 8.9 36 10V30C36 31.1 35.1 32 34 32H6C4.9 32 4 31.1 4 30V10C4 8.9 4.9 8 6 8Z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M36 10L20 21L4 10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Contato</h3>
+        <p>Entre em contato para parcerias, palestras e conversas.</p>
+        <span class="preview-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BAND -->
+<div class="quote-band">
+  <blockquote class="big-quote reveal">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre <em>novas qualidades</em>."
+  </blockquote>
+  <p class="quote-attr reveal delay-2">Luís Vaz de Camões — citação predileta de Terezinha Abel</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     SOBRE PAGE
+════════════════════════════════════════ -->
+<div id="sobre-page" class="page-content" style="display:none;">
+
+<nav id="navbar2">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<section style="min-height:70vh;background:linear-gradient(180deg,#F8F6F2 0%,var(--cream) 100%);position:relative;overflow:hidden;padding:100px 2rem 4rem;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;animation:fadeUp 0.8s 0.4s forwards;opacity:0;">
+    <h1 style="font-family:var(--display);font-size:clamp(2.5rem,6vw,4rem);font-weight:300;color:var(--ink);margin-bottom:1rem;">Quem é<br><em style="color:var(--wave1);font-style:italic;">Terezinha Abel</em></h1>
+    <p style="font-size:1.05rem;color:var(--muted);max-width:700px;margin:0 auto;line-height:1.8;">Professora, pesquisadora, escritora. Uma trajetória que une academia, sensibilidade e transformação através da palavra.</p>
+  </div>
+</section>
+
+<section style="background:var(--paper);padding:6rem 2rem;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem;" class="reveal">
+      <div>
+        <h2 style="font-family:var(--display);font-size:clamp(2rem,4vw,2.8rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:1.5rem;">Uma vida dedicada<br>à <em style="color:var(--wave1);font-style:italic;">formação</em></h2>
+        <p style="color:var(--ink);margin-bottom:1.25rem;font-size:1.02rem;line-height:1.85;">Terezinha Abel Alves é professora, pesquisadora e escritora brasileira, com atuação destacada em Petrolina, Pernambuco. Mestre em Educação pela Universidade de Pernambuco, construiu uma trajetória sólida unindo o universo acadêmico à sensibilidade literária.</p>
+        <p style="color:var(--ink);margin-bottom:1.25rem;font-size:1.02rem;line-height:1.85;">Como educadora, sempre compreendeu a escrita como poderosa ferramenta de transformação. Sua jornada literária nasce da vivência em sala de aula, do contato com crianças e jovens e do desejo de despertar reflexões sobre o mundo, a natureza e as relações humanas.</p>
+        <p style="color:var(--ink);margin-bottom:1.25rem;font-size:1.02rem;line-height:1.85;">Inspirada pela Caatinga, pela infância e pela diversidade, escreve com uma linguagem acessível, delicada e profundamente reflexiva — acreditando na força da literatura para formar leitores e transformar realidades.</p>
+      </div>
+      <div class="reveal delay-2" style="display:flex;flex-direction:column;gap:1.25rem;">
+        <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.15);padding:1.5rem;transition:all 0.3s;">
+          <p style="font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:0.2rem;">Formação</p>
+          <p style="font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink);">Mestre em Educação — UPE</p>
+        </div>
+        <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.15);padding:1.5rem;transition:all 0.3s;">
+          <p style="font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:0.2rem;">Publicações próprias</p>
+          <p style="font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink);">5+ livros autorais</p>
+        </div>
+        <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.15);padding:1.5rem;transition:all 0.3s;">
+          <p style="font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:0.2rem;">Prêmios</p>
+          <p style="font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink);">CNNP 2016</p>
+        </div>
+        <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.15);padding:1.5rem;transition:all 0.3s;">
+          <p style="font-size:0.7rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:0.2rem;">Atuação</p>
+          <p style="font-family:var(--display);font-size:1.15rem;font-weight:600;color:var(--ink);">Educadora, pesquisadora</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     OBRAS PAGE
+════════════════════════════════════════ -->
+<div id="obras-page" class="page-content" style="display:none;">
+
+<nav id="navbar3">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<section style="min-height:70vh;background:linear-gradient(180deg,rgba(110,120,163,0.1) 0%,var(--paper) 100%);position:relative;overflow:hidden;padding:100px 2rem 4rem;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;animation:fadeUp 0.8s 0.4s forwards;opacity:0;">
+    <h1 style="font-family:var(--display);font-size:clamp(2.5rem,6vw,4rem);font-weight:300;color:var(--ink);text-align:center;margin-bottom:1rem;">Todas as<br><em style="color:var(--wave1);">Obras</em></h1>
+    <p style="font-size:1.05rem;color:var(--muted);max-width:700px;margin:0 auto;text-align:center;">Livros, antologias e participações que refletem uma trajetória de palavra e transformação</p>
+  </div>
+</section>
+
+<section style="background:var(--paper);padding:4rem 2rem;">
+  <div class="container">
+    <div style="background:var(--wave2);color:white;border-radius:24px;padding:3rem;margin:3rem 0;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden;">
+      <div style="position:relative;z-index:1;">
+        <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(181,156,83,0.8);margin-bottom:0.5rem;">Obra em destaque</p>
+        <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:300;margin-bottom:1rem;">A Busca do Menino Azul</h2>
+        <p style="font-size:1rem;line-height:1.8;margin-bottom:1.5rem;opacity:0.9;">Uma obra infantojuvenil que reafirma o compromisso de Terezinha Abel com a formação sensível das crianças. Com ilustrações encantadoras, o livro naviga pelos mares da diferença e do pertencimento.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;">
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:1rem;">
+            <p style="font-size:0.7rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3rem;">Autora</p>
+            <p style="font-family:var(--display);font-size:1.05rem;font-weight:600;color:white;">Terezinha Abel Alves</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:1rem;">
+            <p style="font-size:0.7rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3rem;">Ano</p>
+            <p style="font-family:var(--display);font-size:1.05rem;font-weight:600;color:white;">2024</p>
+          </div>
+        </div>
+        <a onclick="alert('Adquirir na Amazon em breve')" class="btn btn-primary" style="cursor:pointer;background:var(--red);">Adquirir agora</a>
+      </div>
+      <div style="position:relative;display:flex;justify-content:center;">
+        <div style="width:300px;height:420px;background:linear-gradient(135deg,#E8D98A,#B59C53);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-family:var(--display);font-size:1.2rem;font-weight:600;box-shadow:0 30px 60px rgba(0,0,0,0.4);">
+          []
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin:4rem 0 2rem;color:var(--ink);">Outros <em style="color:var(--wave1);font-style:italic;">livros</em></h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;">
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2017</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Mimi, Gatinho Sabido</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Uma narrativa leve e engraçada com personagens felinos. Infantojuvenil que conquista leitores de todas as idades.</p>
+      </div>
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2023</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Uma Aula Para Lá de Boa</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Reflexões sobre pegada ecológica e cuidado com a Caatinga. Disponível na Amazon.</p>
+      </div>
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2026</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Esportes na Escola</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Como integrar atividades físicas na rotina escolar. Disponível em Kindle.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     TRAJETÓRIA PAGE
+════════════════════════════════════════ -->
+<div id="trajetoria-page" class="page-content" style="display:none;">
+
+<nav id="navbar4">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<section style="min-height:70vh;background:linear-gradient(135deg,#6E78A3 0%,#4A5280 50%,#2E3460 100%);position:relative;overflow:hidden;padding:100px 2rem 4rem;display:flex;align-items:center;justify-content:center;color:white;">
+  <div style="position:relative;z-index:10;">
+    <h1 style="font-family:var(--display);font-size:clamp(2.5rem,6vw,4rem);font-weight:300;margin-bottom:1rem;animation:fadeUp 0.7s 0.3s forwards;opacity:0;">Uma trajetória de<br><em style="color:var(--sun);font-style:italic;">transformação</em></h1>
+    <p style="font-size:1.05rem;max-width:700px;margin:0 auto;line-height:1.8;animation:fadeUp 0.7s 0.5s forwards;opacity:0;opacity:0.9;">Desde 2016 construindo caminhos através da palavra, da educação e da criatividade</p>
+  </div>
+</section>
+
+<section style="position:relative;padding:4rem 2rem;background:var(--paper);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="position:relative;padding:4rem 0;">
+      <div style="position:relative;margin-bottom:4rem;">
+        <div style="position:absolute;left:50%;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--wave1),var(--wave2),var(--wave3));transform:translateX(-50%);"></div>
+        
+        <div style="position:relative;margin-bottom:4rem;margin-right:52%;">
+          <div style="position:absolute;left:50%;top:30px;width:20px;height:20px;margin-left:-10px;background:white;border:4px solid var(--sun);border-radius:50%;z-index:10;"></div>
+          <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:2rem;">
+            <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--sun);margin-bottom:0.5rem;">2016</p>
+            <p style="font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Prêmio Nacional CNNP</p>
+            <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">Vencedora da Antologia Poética com o poema "Solidão". Reconhecimento nacional que marca sua trajetória.</p>
+          </div>
+        </div>
+
+        <div style="position:relative;margin-bottom:4rem;margin-left:52%;">
+          <div style="position:absolute;left:-25px;top:30px;width:20px;height:20px;margin-left:-10px;background:white;border:4px solid var(--wave1);border-radius:50%;z-index:10;"></div>
+          <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:2rem;">
+            <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2017</p>
+            <p style="font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Mimi, Gatinho Sabido</p>
+            <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">Lançamento do primeiro livro infantojuvenil. Consolidação de sua voz como escritora.</p>
+          </div>
+        </div>
+
+        <div style="position:relative;margin-bottom:4rem;margin-right:52%;">
+          <div style="position:absolute;left:50%;top:30px;width:20px;height:20px;margin-left:-10px;background:white;border:4px solid var(--wave1);border-radius:50%;z-index:10;"></div>
+          <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:2rem;">
+            <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2021</p>
+            <p style="font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Mestrado em Educação</p>
+            <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">Conclusão do programa UPE. Consolidação da vertente teórica.</p>
+          </div>
+        </div>
+
+        <div style="position:relative;margin-bottom:4rem;margin-left:52%;">
+          <div style="position:absolute;left:-25px;top:30px;width:20px;height:20px;margin-left:-10px;background:white;border:4px solid var(--wave1);border-radius:50%;z-index:10;"></div>
+          <div style="background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:2rem;">
+            <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2024</p>
+            <p style="font-family:var(--display);font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;">A Busca do Menino Azul</p>
+            <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">Novo livro infantojuvenil com ilustrações. Continuação de seu compromisso.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     BLOG PAGE
+════════════════════════════════════════ -->
+<div id="blog-page" class="page-content" style="display:none;">
+
+<nav id="navbar5">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<section style="min-height:70vh;background:linear-gradient(180deg,rgba(110,120,163,0.1) 0%,var(--paper) 100%);position:relative;overflow:hidden;padding:100px 2rem 4rem;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;animation:fadeUp 0.8s 0.4s forwards;opacity:0;">
+    <h1 style="font-family:var(--display);font-size:clamp(2.5rem,6vw,4rem);font-weight:300;color:var(--ink);text-align:center;margin-bottom:1rem;">Blog <em style="color:var(--wave1);">&</em> Notícias</h1>
+    <p style="font-size:1.05rem;color:var(--muted);max-width:700px;margin:0 auto;text-align:center;">Reflexões, atualizações e fragmentos do universo literário</p>
+  </div>
+</section>
+
+<section style="background:var(--paper);padding:4rem 2rem;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:3rem 0;">
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2.5rem;display:flex;flex-direction:column;cursor:pointer;">
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.75rem;">Notícia</p>
+        <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Circuito Literário de Pernambuco 2026</h3>
+        <p style="font-size:0.95rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Terezinha Abel marca presença no maior evento literário do estado, apresentando suas obras ao público.</p>
+        <p style="font-size:0.8rem;color:var(--muted);">Junho 2026</p>
+      </div>
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2.5rem;display:flex;flex-direction:column;cursor:pointer;">
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:0.75rem;">Reflexão</p>
+        <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Literatura para quem mais precisa</h3>
+        <p style="font-size:0.95rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Reflexões sobre o projeto "Leitura em Ação" e o poder transformador das histórias.</p>
+        <p style="font-size:0.8rem;color:var(--muted);">2025</p>
+      </div>
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2.5rem;display:flex;flex-direction:column;cursor:pointer;">
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.75rem;">Notícia</p>
+        <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Lançamento: Esportes na Escola</h3>
+        <p style="font-size:0.95rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">O novo livro chega em 2026 para questionar o papel do esporte na formação humana.</p>
+        <p style="font-size:0.8rem;color:var(--muted);">2026</p>
+      </div>
+
+      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2.5rem;display:flex;flex-direction:column;cursor:pointer;">
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);margin-bottom:0.75rem;">Reflexão</p>
+        <h3 style="font-family:var(--display);font-size:1.4rem;font-weight:600;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">O menino que navegava</h3>
+        <p style="font-size:0.95rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Um conto curtíssimo onde as ondas do Rio São Francisco carregam segredos que crianças escutam.</p>
+        <p style="font-size:0.8rem;color:var(--muted);">Especial</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     CONTATO PAGE
+════════════════════════════════════════ -->
+<div id="contato-page" class="page-content" style="display:none;">
+
+<nav id="navbar6">
+  <a class="nav-logo" onclick="showPage('home')">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="width:24px;height:24px;stroke:currentColor;stroke-width:1.5;">
+      <path d="M14 2L6 10V26H22V10L14 2Z" stroke-linejoin="round"/>
+      <path d="M10 14H18V26H10V14Z" fill="currentColor" opacity="0.3"/>
+    </svg>
+    <span>Terezinha</span> Abel
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Início</a></li>
+    <li><a onclick="showPage('sobre')">Sobre</a></li>
+    <li><a onclick="showPage('obras')">Obras</a></li>
+    <li><a onclick="showPage('trajetoria')">Trajetória</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contato')">Contato</a></li>
+  </ul>
+</nav>
+
+<section style="min-height:70vh;background:linear-gradient(135deg,var(--red) 0%,#8B2428 100%);position:relative;overflow:hidden;padding:100px 2rem 4rem;display:flex;align-items:center;justify-content:center;color:white;">
+  <div style="position:relative;z-index:10;">
+    <h1 style="font-family:var(--display);font-size:clamp(2.5rem,6vw,4rem);font-weight:300;margin-bottom:1rem;animation:fadeUp 0.7s 0.3s forwards;opacity:0;">Deixe sua<br>mensagem</h1>
+    <p style="font-size:1.05rem;max-width:700px;margin:0 auto;line-height:1.8;animation:fadeUp 0.7s 0.5s forwards;opacity:0;opacity:0.9;">Tem interesse em palestras, leituras mediadas ou parcerias? Toda palavra tem o seu lugar.</p>
+  </div>
+</section>
+
+<section style="background:var(--paper);padding:6rem 2rem;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin:3rem 0;">
+
+      <div>
+        <h2 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin-bottom:2rem;color:var(--ink);">Formulário de <em style="color:var(--wave1);font-style:italic;">contato</em></h2>
+        
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-size:0.78rem;font-weight:500;color:var(--muted);letter-spacing:0.04em;display:block;margin-bottom:0.5rem;">Nome</label>
+          <input type="text" placeholder="Como gostaria de ser chamado/a?" style="width:100%;padding:0.9rem 1.1rem;border:1.5px solid rgba(110,120,163,0.2);border-radius:12px;background:white;font-family:var(--body);font-size:0.95rem;color:var(--ink);outline:none;">
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-size:0.78rem;font-weight:500;color:var(--muted);letter-spacing:0.04em;display:block;margin-bottom:0.5rem;">E-mail</label>
+          <input type="email" placeholder="seu@email.com" style="width:100%;padding:0.9rem 1.1rem;border:1.5px solid rgba(110,120,163,0.2);border-radius:12px;background:white;font-family:var(--body);font-size:0.95rem;color:var(--ink);outline:none;">
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-size:0.78rem;font-weight:500;color:var(--muted);letter-spacing:0.04em;display:block;margin-bottom:0.5rem;">Mensagem</label>
+          <textarea placeholder="Escreva aqui..." style="width:100%;padding:0.9rem 1.1rem;border:1.5px solid rgba(110,120,163,0.2);border-radius:12px;background:white;font-family:var(--body);font-size:0.95rem;color:var(--ink);outline:none;min-height:120px;resize:vertical;"></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="alert('Formulário pronto para integração!')" style="cursor:pointer;background:var(--red);align-self:flex-start;">Enviar mensagem</button>
+      </div>
+
+      <div>
+        <h2 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin-bottom:2rem;color:var(--ink);">Redes e <em style="color:var(--wave1);font-style:italic;">contato</em></h2>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <a href="#" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
+            <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.8rem;background:rgba(110,120,163,0.1);">📸</div>
+            <div>
+              <p style="font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.1rem;">Instagram</p>
+              <p style="font-size:0.8rem;color:var(--muted);">Siga para novidades</p>
+            </div>
+          </a>
+
+          <a href="#" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
+            <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.8rem;background:rgba(110,120,163,0.1);">📧</div>
+            <div>
+              <p style="font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.1rem;">Facebook</p>
+              <p style="font-size:0.8rem;color:var(--muted);">Página oficial</p>
+            </div>
+          </a>
+
+          <a href="#" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
+            <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.8rem;background:rgba(110,120,163,0.1);">📚</div>
+            <div>
+              <p style="font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.1rem;">Adquirir livros</p>
+              <p style="font-size:0.8rem;color:var(--muted);">Amazon · Editoras</p>
+            </div>
+          </a>
+        </div>
+
+        <div style="background:var(--cream);border-radius:16px;border:1px solid rgba(110,120,163,0.15);padding:2rem;margin-top:2rem;text-align:center;">
+          <h3 style="font-family:var(--display);font-style:italic;font-size:1.2rem;color:var(--ink);margin-bottom:0.5rem;">Localização</h3>
+          <p style="font-size:0.9rem;color:var(--muted);">Petrolina, Pernambuco — Brasil</p>
+          <p style="font-size:0.85rem;margin-top:0.75rem;opacity:0.7;">Atende remotamente para todo o Brasil</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-logo">Terezinha Abel</p>
+  <p class="footer-sub">Escritora · Educadora · Petrolina-PE</p>
+  <p class="footer-camoes">
+    "Mudam-se os tempos, mudam-se as vontades,<br>
+    muda-se o ser, muda-se a confiança;<br>
+    todo o Mundo é composto de mudança,<br>
+    tomando sempre novas qualidades."<br>
+    <span>— Luís Vaz de Camões</span>
+  </p>
+  <p class="footer-copy">© 2026 Terezinha Abel · Todos os direitos reservados</p>
+</footer>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+// PAGE SYSTEM
+function showPage(page) {
+  // Hide all
+  document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('nav').forEach(n => n.style.display = 'none');
+  
+  // Show selected
+  document.getElementById(page + '-page').style.display = 'block';
+  const navNum = {home:0, sobre:1, obras:2, trajetoria:3, blog:4, contato:5}[page];
+  document.querySelectorAll('nav')[navNum || 0].style.display = 'flex';
+  
+  // Update indicator
+  const labels = {home:'Home', sobre:'Sobre', obras:'Obras', trajetoria:'Trajetória', blog:'Blog', contato:'Contato'};
+  document.getElementById('page-indicator').textContent = labels[page];
+  
+  // Scroll to top
+  window.scrollTo(0, 0);
+  
+  // Reveal animations
+  setTimeout(() => {
+    revealElements();
+  }, 100);
+}
+
+// SCROLL PROGRESS
+const progressBar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  const max = document.body.scrollHeight - window.innerHeight;
+  progressBar.style.width = (window.scrollY / max * 100) + '%';
+});
+
+// NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('nav').forEach(nav => {
+    if(nav.style.display !== 'none') {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }
+  });
+});
+
+// REVEAL ON SCROLL
+function revealElements() {
+  const els = document.querySelectorAll('.reveal, .reveal-left');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, {threshold: 0.12});
+  els.forEach(el => obs.observe(el));
+}
+
+// PARALLAX
+window.addEventListener('scroll', () => {
+  const clouds = document.querySelectorAll('.cloud');
+  const sun = document.querySelector('.hero-sun');
+  clouds.forEach((c, i) => {
+    c.style.transform = `translateY(${window.scrollY * (0.05 + i * 0.02)}px)`;
+  });
+  if(sun) sun.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+});
+
+revealElements();
+</script>
+
+</body>
+</html>
