@@ -147,15 +147,63 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 /* PAGE INDICATOR */
 .page-indicator{position:fixed;bottom:2rem;right:2rem;z-index:800;background:var(--wave2);color:white;padding:1rem 1.5rem;border-radius:100px;font-size:0.85rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;box-shadow:0 8px 24px rgba(74,82,128,0.3);transition:all 0.3s;}
 
+/* MOBILE MENU */
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;background:transparent;border:none;cursor:pointer;padding:0;z-index:950;}
+.nav-burger span{display:block;width:100%;height:2px;background:var(--wave2);border-radius:2px;transition:all 0.25s;}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
 /* RESPONSIVE */
 @media(max-width:860px){
-  nav .nav-links{display:none;}
+  nav{padding:0 1.25rem;}
+  nav .nav-links{
+    display:flex;
+    position:fixed;
+    top:63px;left:0;right:0;
+    flex-direction:column;
+    gap:0;
+    background:rgba(244,240,234,0.98);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(110,120,163,0.15);
+    box-shadow:0 12px 24px rgba(30,40,80,0.08);
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:max-height 0.3s ease,opacity 0.2s ease;
+    pointer-events:none;
+  }
+  nav .nav-links.open{max-height:400px;opacity:1;pointer-events:auto;}
+  nav .nav-links li{width:100%;}
+  nav .nav-links a{display:block;padding:1.1rem 1.5rem;font-size:0.85rem;border-bottom:1px solid rgba(110,120,163,0.08);}
+  .nav-burger{display:flex;}
+
   section{padding:4rem 1.25rem;}
   .preview-grid{grid-template-columns:1fr;}
   .livro-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .grid-2col,.grid-2col-uneven{grid-template-columns:1fr !important;gap:2rem !important;}
+  .page-indicator{display:none;}
+  .book-cards-grid{grid-template-columns:1fr !important;}
+}
+
+@media(max-width:480px){
+  .hero-title{font-size:clamp(2.1rem,10vw,3rem);}
+  .livro-meta,.meta-2col{grid-template-columns:1fr !important;}
 }
 
 .section-lead{font-size:1.05rem;color:var(--muted);max-width:540px;line-height:1.8;margin-bottom:3rem;}
+
+/* BOOK COVER + CARD */
+.book-cover-frame{width:100%;aspect-ratio:3/4.2;border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#6E78A3,#4A5280);display:flex;align-items:center;justify-content:center;}
+.book-cover-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+.book-card-cover{width:100%;aspect-ratio:3/4;border-radius:14px;overflow:hidden;margin-bottom:1.25rem;box-shadow:0 12px 28px rgba(30,40,80,0.15);}
+.book-card-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.35s ease;}
+.book-card:hover .book-card-cover img{transform:scale(1.05);}
+.book-card{background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:1.75rem;display:flex;flex-direction:column;transition:all 0.3s;}
+.book-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(30,40,80,0.1);}
+.book-tag-soon{display:inline-block;font-size:0.7rem;font-weight:600;letter-spacing:0.05em;color:var(--muted);background:rgba(110,120,163,0.1);padding:0.4rem 0.9rem;border-radius:100px;align-self:flex-start;}
+.book-buy-link{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.85rem;font-weight:600;color:var(--red);text-decoration:none;align-self:flex-start;}
+.book-buy-link:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -174,6 +222,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -240,8 +289,8 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     <div class="livro-grid">
       <div class="livro-img-wrap reveal-left">
         <span class="livro-badge">Lançamento 2024</span>
-        <div class="livro-img" style="width:300px;height:420px;background:linear-gradient(135deg,#6E78A3,#4A5280);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-family:var(--display);font-size:1.5rem;font-weight:300;">
-          
+        <div class="livro-img book-cover-frame" style="max-width:300px;">
+          <img src="images/a-busca-do-menino-azul.jpg" alt="Capa do livro A Busca do Menino Azul, de Terezinha Abel Alves" loading="lazy">
         </div>
       </div>
       <div class="livro-text reveal-left">
@@ -266,6 +315,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
             <p class="meta-value">Asinha Editora</p>
           </div>
         </div>
+        <a href="https://asesdaliteratura.com/nosso-catalogo/a-busca-do-menino-azul/" target="_blank" rel="noopener" class="btn btn-primary" style="background:var(--sun);color:var(--ink);">Adquirir agora</a>
       </div>
     </div>
   </div>
@@ -396,6 +446,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -415,7 +466,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 
 <section style="background:var(--paper);padding:6rem 2rem;">
   <div class="container">
-    <div style="display:grid;grid-template-columns:2fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem;" class="reveal">
+    <div class="reveal grid-2col-uneven" style="display:grid;grid-template-columns:2fr 1fr;gap:4rem;align-items:start;margin-bottom:4rem;">
       <div>
         <h2 style="font-family:var(--display);font-size:clamp(2rem,4vw,2.8rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:1.5rem;">Uma vida dedicada<br>à <em style="color:var(--wave1);font-style:italic;">formação</em></h2>
         <p style="color:var(--ink);margin-bottom:1.25rem;font-size:1.02rem;line-height:1.85;">Terezinha Abel Alves é professora, pesquisadora e escritora brasileira, com atuação destacada em Petrolina, Pernambuco. Mestre em Educação pela Universidade de Pernambuco, construiu uma trajetória sólida unindo o universo acadêmico à sensibilidade literária.</p>
@@ -472,6 +523,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -491,12 +543,12 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 
 <section style="background:var(--paper);padding:4rem 2rem;">
   <div class="container">
-    <div style="background:var(--wave2);color:white;border-radius:24px;padding:3rem;margin:3rem 0;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden;">
+    <div class="grid-2col" style="background:var(--wave2);color:white;border-radius:24px;padding:3rem;margin:3rem 0;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;position:relative;overflow:hidden;">
       <div style="position:relative;z-index:1;">
         <p style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(181,156,83,0.8);margin-bottom:0.5rem;">Obra em destaque</p>
         <h2 style="font-family:var(--display);font-size:clamp(1.8rem,3vw,2.4rem);font-weight:300;margin-bottom:1rem;">A Busca do Menino Azul</h2>
         <p style="font-size:1rem;line-height:1.8;margin-bottom:1.5rem;opacity:0.9;">Uma obra infantojuvenil que reafirma o compromisso de Terezinha Abel com a formação sensível das crianças. Com ilustrações encantadoras, o livro naviga pelos mares da diferença e do pertencimento.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;">
+        <div class="meta-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;">
           <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:1rem;">
             <p style="font-size:0.7rem;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3rem;">Autora</p>
             <p style="font-family:var(--display);font-size:1.05rem;font-weight:600;color:white;">Terezinha Abel Alves</p>
@@ -506,34 +558,56 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
             <p style="font-family:var(--display);font-size:1.05rem;font-weight:600;color:white;">2024</p>
           </div>
         </div>
-        <a onclick="alert('Adquirir na Amazon em breve')" class="btn btn-primary" style="cursor:pointer;background:var(--red);">Adquirir agora</a>
+        <a href="https://asesdaliteratura.com/nosso-catalogo/a-busca-do-menino-azul/" target="_blank" rel="noopener" class="btn btn-primary" style="cursor:pointer;background:var(--red);">Adquirir agora</a>
       </div>
       <div style="position:relative;display:flex;justify-content:center;">
-        <div style="width:300px;height:420px;background:linear-gradient(135deg,#E8D98A,#B59C53);border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-family:var(--display);font-size:1.2rem;font-weight:600;box-shadow:0 30px 60px rgba(0,0,0,0.4);">
-          []
+        <div class="book-cover-frame" style="max-width:300px;box-shadow:0 30px 60px rgba(0,0,0,0.4);">
+          <img src="images/a-busca-do-menino-azul.jpg" alt="Capa do livro A Busca do Menino Azul, de Terezinha Abel Alves" loading="lazy">
         </div>
       </div>
     </div>
 
     <h3 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin:4rem 0 2rem;color:var(--ink);">Outros <em style="color:var(--wave1);font-style:italic;">livros</em></h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;">
+    <div class="book-cards-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;">
 
-      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+      <div class="book-card">
+        <div class="book-card-cover"><img src="images/mimi-gatinho-sabido.jpg" alt="Capa do livro Mimi, o Gatinho Sabido, de Terezinha Abel" loading="lazy"></div>
         <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2017</p>
-        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Mimi, Gatinho Sabido</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Mimi, o Gatinho Sabido</p>
         <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Uma narrativa leve e engraçada com personagens felinos. Infantojuvenil que conquista leitores de todas as idades.</p>
+        <span class="book-tag-soon">Link de compra em breve</span>
       </div>
 
-      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+      <div class="book-card">
+        <div class="book-card-cover"><img src="images/uma-aula-para-la-de-boa.jpg" alt="Capa do livro Uma Aula Para Lá de Boa, de Terezinha Abel" loading="lazy"></div>
         <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2023</p>
         <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Uma Aula Para Lá de Boa</p>
-        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Reflexões sobre pegada ecológica e cuidado com a Caatinga. Disponível na Amazon.</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Reflexões sobre pegada ecológica e cuidado com a Caatinga. Disponível em e-book na Amazon.</p>
+        <a href="https://www.amazon.com.br/Uma-aula-para-lá-boa-ebook/dp/B0CD7QXGKB" target="_blank" rel="noopener" class="book-buy-link">Comprar na Amazon →</a>
       </div>
 
-      <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2rem;display:flex;flex-direction:column;transition:all 0.3s;">
+      <div class="book-card">
+        <div class="book-card-cover"><img src="images/a-floresta-encantada.jpg" alt="Capa do livro A Floresta Encantada: Contos e Fábulas" loading="lazy"></div>
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">Coletânea</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">A Floresta Encantada: Contos e Fábulas</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Participação em coletânea de contos e fábulas, organizada pela Lura Editorial.</p>
+        <a href="https://www.amazon.com.br/floresta-encantada-Contos-Fábulas/dp/6554781080" target="_blank" rel="noopener" class="book-buy-link">Comprar na Amazon →</a>
+      </div>
+
+      <div class="book-card">
+        <div class="book-card-cover"><img src="images/cnnp-2016-antologia.jpg" alt="Capa da antologia CNNP 2016 - Concurso Nacional Novos Poetas" loading="lazy"></div>
+        <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2016</p>
+        <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">CNNP 2016 — Antologia Poética</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Antologia do Concurso Nacional Novos Poetas, reunindo o poema premiado "Solidão".</p>
+        <span class="book-tag-soon">Link de compra em breve</span>
+      </div>
+
+      <div class="book-card">
+        <div class="book-card-cover" style="background:linear-gradient(135deg,#B59C53,#7A5C3A);display:flex;align-items:center;justify-content:center;color:white;font-family:var(--display);font-size:1rem;font-weight:600;text-align:center;padding:1.5rem;">Esportes na Escola</div>
         <p style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.5rem;">2026</p>
         <p style="font-family:var(--display);font-size:1.4rem;font-weight:600;font-style:italic;color:var(--ink);margin-bottom:0.75rem;line-height:1.3;">Esportes na Escola</p>
-        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Como integrar atividades físicas na rotina escolar. Disponível em Kindle.</p>
+        <p style="font-size:0.9rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.5rem;">Como integrar atividades físicas na rotina escolar. Lançamento previsto para 2026.</p>
+        <span class="book-tag-soon">Em breve</span>
       </div>
 
     </div>
@@ -568,6 +642,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -660,6 +735,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -679,7 +755,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 
 <section style="background:var(--paper);padding:4rem 2rem;">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:3rem 0;">
+    <div class="grid-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin:3rem 0;">
 
       <div style="background:white;border-radius:20px;border:1px solid rgba(110,120,163,0.12);padding:2.5rem;display:flex;flex-direction:column;cursor:pointer;">
         <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--wave1);margin-bottom:0.75rem;">Notícia</p>
@@ -741,6 +817,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
     </svg>
     <span>Terezinha</span> Abel
   </a>
+  <button class="nav-burger" aria-label="Menu" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span></span><span></span><span></span></button>
   <ul class="nav-links">
     <li><a onclick="showPage('home')">Início</a></li>
     <li><a onclick="showPage('sobre')">Sobre</a></li>
@@ -760,7 +837,7 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 
 <section style="background:var(--paper);padding:6rem 2rem;">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin:3rem 0;">
+    <div class="grid-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin:3rem 0;">
 
       <div>
         <h2 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin-bottom:2rem;color:var(--ink);">Formulário de <em style="color:var(--wave1);font-style:italic;">contato</em></h2>
@@ -787,19 +864,11 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
         <h2 style="font-family:var(--display);font-size:1.8rem;font-weight:300;margin-bottom:2rem;color:var(--ink);">Redes e <em style="color:var(--wave1);font-style:italic;">contato</em></h2>
 
         <div style="display:flex;flex-direction:column;gap:1rem;">
-          <a href="#" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
+          <a href="https://www.instagram.com/prof_terezinhaabel/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
             <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.8rem;background:rgba(110,120,163,0.1);">📸</div>
             <div>
               <p style="font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.1rem;">Instagram</p>
-              <p style="font-size:0.8rem;color:var(--muted);">Siga para novidades</p>
-            </div>
-          </a>
-
-          <a href="#" style="display:flex;align-items:center;gap:1rem;background:white;border-radius:16px;border:1px solid rgba(110,120,163,0.12);padding:1.5rem;text-decoration:none;color:inherit;transition:all 0.25s;">
-            <div style="width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.8rem;background:rgba(110,120,163,0.1);">📧</div>
-            <div>
-              <p style="font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.1rem;">Facebook</p>
-              <p style="font-size:0.8rem;color:var(--muted);">Página oficial</p>
+              <p style="font-size:0.8rem;color:var(--muted);">@prof_terezinhaabel</p>
             </div>
           </a>
 
@@ -842,6 +911,10 @@ footer{background:var(--wave3);color:rgba(248,246,242,0.6);padding:3.5rem 2rem;t
 <script>
 // PAGE SYSTEM
 function showPage(page) {
+  // Close any open mobile menu
+  document.querySelectorAll('.nav-links.open').forEach(u => u.classList.remove('open'));
+  document.querySelectorAll('.nav-burger.open').forEach(b => b.classList.remove('open'));
+
   // Hide all
   document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
   document.querySelectorAll('nav').forEach(n => n.style.display = 'none');
